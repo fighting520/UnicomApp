@@ -26,6 +26,7 @@ func paymentHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ok")
 	r.ParseForm()
 	log.Println(r.Form)
+
 	w.Write([]byte("ok"))
 
 }
