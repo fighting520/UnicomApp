@@ -2,7 +2,10 @@
 package main
 
 import (
+	"UnicomApp/db"
 	"fmt"
+
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -23,10 +26,23 @@ func main() {
 }
 
 func paymentHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ok")
 	r.ParseForm()
 	log.Println(r.Form)
+	if r.Method == "GET" {
 
+	} else if r.Method == "POST" {
+		result, _ := ioutil.ReadAll(r.Body)
+		r.Body.Close()
+		fmt.Printf("%s\n", result)
+		var s db.Goods
+		json.Unmarshal([]byte(result), &s)
+		fmt.Println(s)
+		err := db.Save(s)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+	}
 	w.Write([]byte("ok"))
 
 }
