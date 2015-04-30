@@ -3,9 +3,7 @@ package main
 
 import (
 	"UnicomApp/db"
-	"fmt"
 
-	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -31,15 +29,41 @@ func paymentHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
 	} else if r.Method == "POST" {
-		result, _ := ioutil.ReadAll(r.Body)
-		r.Body.Close()
-		fmt.Printf("%s\n", result)
-		var s db.Goods
-		json.Unmarshal([]byte(result), &s)
-		fmt.Println(s)
-		err := db.Save(s)
+		g := db.Goods{}
+		if len(r.Form["amount"]) > 0 {
+			g.Amount = r.Form["amount"][0]
+		}
+		if len(r.Form["cpTradeId"]) > 0 {
+			g.CpTradeId = r.Form["cpTradeId"][0]
+		}
+
+		if len(r.Form["money"]) > 0 {
+			g.Money = r.Form["money"][0]
+		}
+		if len(r.Form["payDetailId"]) > 0 {
+			g.PayDetailId = r.Form["payDetailId"][0]
+		}
+		if len(r.Form["payStatus"]) > 0 {
+			g.PayStatus = r.Form["payStatus"][0]
+		}
+		if len(r.Form["payType"]) > 0 {
+			g.PayType = r.Form["payType"][0]
+		}
+		if len(r.Form["price"]) > 0 {
+			g.Price = r.Form["price"][0]
+		}
+		if len(r.Form["productName"]) > 0 {
+			g.ProductName = r.Form["productName"][0]
+		}
+		if len(r.Form["productType"]) > 0 {
+			g.ProductType = r.Form["productType"][0]
+		}
+		if len(r.Form["sign"]) > 0 {
+			g.Sign = r.Form["sign"][0]
+		}
+		err := db.Save(g)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 		}
 
 	}
