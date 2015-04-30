@@ -16,7 +16,10 @@ func main() {
 
 	http.HandleFunc("/interface/payment", paymentHandler)
 
-	http.ListenAndServe(":9999", nil)
+	err := http.ListenAndServe(":9999", nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func paymentHandler(w http.ResponseWriter, r *http.Request) {
